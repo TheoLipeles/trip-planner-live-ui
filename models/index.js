@@ -35,7 +35,7 @@ var daySchema = new mongoose.Schema({
 	hotel: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Hotel'},
-	restaurant: {
+	restaurants: {
 		type: [mongoose.Schema.Types.ObjectId],
 		ref: 'Restaurant'},
 	thingsToDo: {

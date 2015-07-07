@@ -14,6 +14,17 @@ $(document).ready(function () {
 			.drawButton();
 	};
 
+	Day.buildOne = function(data) {
+		var newDay = new Day();
+		newDay.hotel = data.hotel;
+		newDay.restaurants = data.restaurants;
+		newDay.thingsToDo = data.thingsToDo;
+		newDay.number = data.number;
+
+		newDay.$button.text(newDay.number);
+		return newDay;
+	};
+
 	// makes the day button dom element and click handler
 	Day.prototype.buildButton = function () {
 		this.$button = $('<button class="btn btn-circle day-btn"></button>').text(this.number);
@@ -81,7 +92,14 @@ $(document).ready(function () {
 	}
 
 	$('#add-day').on('click', function () {
-		new Day();
+		var newDay = new Day();
+		$.ajax({
+		    type: 'post',
+		    url: '/days',
+		    data: {number: newDay.number},
+		    success: function (responseData) {
+		    }
+		});
 	});
 
 	$('#day-title > .remove').on('click', deleteCurrentDay);

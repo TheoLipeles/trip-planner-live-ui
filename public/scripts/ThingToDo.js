@@ -11,14 +11,31 @@ $(document).ready(function () {
 			.buildItineraryItem()
 			.drawItineraryItem();
 		currentDay.thingsToDo.push(this);
-	}
+	};
+
+	ThingToDo.buildAndSave = function (data) {
+		var newThingToDo = new ThingToDo(data);
+		var currentDayId;
+		$.get("/days", function(data) {
+			currentDayId = data.filter(function(value) {
+				return value.number === currentDay.number;
+			})[0];
+			$.ajax({
+			    type: 'post',
+			    url: '/days/' + currentDayId + "/thingsToDo",
+			    data: {name: newThingToDo.name},
+			    success: function (responseData) {
+			    }
+			});
+		});
+	};
 
 	ThingToDo.prototype = generateAttraction({
 		icon: '/images/star-3.png',
 		$listGroup: $('#my-things-to-do .list-group'),
 		$all: $('#all-things-to-do'),
 		all: all_things_to_do,
-		constructor: ThingToDo
+		constructor: ThingToDo.buildAndSave
 	});
 
 	ThingToDo.prototype.delete = function () {
@@ -27,5 +44,18 @@ $(document).ready(function () {
 		removed
 			.eraseMarker()
 			.eraseItineraryItem();
+
+		$.get("/days", (function(data) {
+			currentDayId = data.filter(function(value) {
+				return value.number === currentDay.number;
+			})[0];
+
+			$.ajax({
+			    type: 'delete',
+			    url: '/days/' + currentDayId + "/thingToDo/" + this._id,
+			    success: function (responseData) {
+			    }
+			});
+		}).bind(this));
 	};
 });
