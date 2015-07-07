@@ -74,21 +74,19 @@ $(document).ready(function () {
 
 
 	function deleteCurrentDay () {
-		if (days.length > 1) {
-			// removes previous day and sets current day equal to the subsequent day
-			var index = days.indexOf(currentDay),
-				previousDay = days.splice(index, 1)[0],
-				newCurrent = days[index] || days[index - 1];
-			// resets the day numbers
-			days.forEach(function (day, idx) {
-				day.number = idx + 1;
-				day.$button.text(day.number);
-			});
-			// switches to the new current day
-			newCurrent.switchTo();
-			// erases previous day button
-			previousDay.eraseButton();
-		}
+		// removes previous day and sets current day equal to the subsequent day
+		var index = days.indexOf(currentDay),
+			previousDay = days.splice(index, 1)[0],
+			newCurrent = days[index] || days[index - 1];
+		// resets the day numbers
+		days.forEach(function (day, idx) {
+			day.number = idx + 1;
+			day.$button.text(day.number);
+		});
+		// switches to the new current day
+		newCurrent.switchTo();
+		// erases previous day button
+		previousDay.eraseButton();
 	}
 
 	$('#add-day').on('click', function () {
@@ -102,5 +100,20 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#day-title > .remove').on('click', deleteCurrentDay);
+	$('#day-title > .remove').on('click', function(day) {
+		if (days.length > 1) {
+			$.get("/days", function(data) {
+				currentDayId = data.filter(function(value) {
+					return value.number === currentDay.number;
+				})[0]._id;
+				$.ajax({
+				    type: 'delete',
+				    url: '/days/' + currentDayId,
+				    success: function (responseData) {
+				    }
+				});
+			});
+			deleteCurrentDay(day);
+		}
+	});
 });

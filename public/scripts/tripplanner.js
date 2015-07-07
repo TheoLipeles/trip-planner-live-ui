@@ -22,7 +22,7 @@ $(document).ready(function () {
 		        	if (dbHotel.length > 0) {
 			        	day.hotel = new Hotel(dbHotel[0]);
 			        }
-		        	day.restaurants.map(function(rId) {
+		        	day.restaurants = day.restaurants.map(function(rId) {
 		        		rId = all_restaurants.filter(function(value){
 		        			return value._id === rId;
 		        		});
@@ -30,7 +30,7 @@ $(document).ready(function () {
 			        		return new Restaurant(rId[0]);
 		        		}
 		        	});
-		        	day.thingsToDo.map(function(thingId) {
+		        	day.thingsToDo = day.thingsToDo.map(function(thingId) {
 		        		thingId = all_things_to_do.filter(function(value){
 		        			return value._id === thingId;
 		        		});

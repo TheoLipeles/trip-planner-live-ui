@@ -19,7 +19,7 @@ $(document).ready(function () {
 		$.get("/days", function(data) {
 			currentDayId = data.filter(function(value) {
 				return value.number === currentDay.number;
-			})[0];
+			})[0]._id;
 			$.ajax({
 			    type: 'post',
 			    url: '/days/' + currentDayId + "/restaurants",
@@ -47,7 +47,7 @@ $(document).ready(function () {
 		$.get("/days", (function(data) {
 			currentDayId = data.filter(function(value) {
 				return value.number === currentDay.number;
-			})[0];
+			})[0]._id;
 
 			$.ajax({
 			    type: 'delete',
