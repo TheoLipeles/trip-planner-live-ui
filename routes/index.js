@@ -35,6 +35,7 @@ router.get('/',
 		res.render('index');
 	});
 
+
 router.get('/hotels', function () {
 	models.Hotel
 		.find({})
